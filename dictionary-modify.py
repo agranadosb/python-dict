@@ -2,7 +2,7 @@
 
 class ChangesDicts():
     def change_dict(self, dicti, key, value): 
-        """ Function that changes the value of a key given
+        """ Function that changes the value of a key given of a dictionary or json
             :param dicti: Dict to change
             :param key: Key of the value to change
             :param value: Value to be changed
