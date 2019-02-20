@@ -16,7 +16,7 @@ class ChangesDicts():
             for subItem in dicti:
                 result = self.change_dict(key, subItem, value)
                 res.append(result)
-            return result
+            return res
         elif isinstance(dicti,dict):
             for nodeName in dicti.keys():
                 subTree = dicti[nodeName]
@@ -40,7 +40,7 @@ class ChangesDicts():
             for subItem in tree:
                 result = self.changes_dict(subItem, change)
                 res.append(result)
-            return result
+            return res
         elif isinstance(tree,dict):
             for nodeName in tree.keys():
                 subTree = tree[nodeName]
@@ -54,3 +54,28 @@ class ChangesDicts():
             return tree
         elif isinstance(tree, str):
             return tree
+
+    def changes_dict_coincidence(tree, change, wordHelp):
+    """Function that changes the values of a json with the keys given
+    :param tree: Json to be changed
+    :param change: Dictionary with the keys to be changed and the new values: {field1: value1, field2: value2,..., fieldN: valueN}
+    :param wordHelp: Word that must be in the values of the dict that contains the change"""
+    if isinstance(tree,(list,tuple)):
+        res = []
+        for subItem in tree:
+            result = changes_dict(subItem, change, wordHelp)
+            res.append(result)
+        return res
+    elif isinstance(tree,dict):
+        for nodeName in tree.keys():
+            subTree = tree[nodeName]
+            if nodeName in list(change.keys()) and wordHelp in list(tree.values()):
+                tree[nodeName] = {'value': str(change[nodeName])}
+                change.pop(nodeName)
+                if not change:
+                    break
+            else:
+                tree[nodeName] = changes_dict(subTree, change, wordHelp)
+        return tree
+    elif isinstance(tree, str):
+        return tree
